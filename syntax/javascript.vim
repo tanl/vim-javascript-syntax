@@ -2,7 +2,7 @@
 "      Language: JavaScript
 "    Maintainer: Jose Elera Campana <https://github.com/jelera>
 " Last Modified: Mon 09 Dec 2013 01:20:46 PM CST
-"       Version: 0.8.1
+"       Version: 0.8.2
 "       Changes: Go to https://github.com/jelera/vim-javascript-syntax for
 "                recent changes.
 "       Credits: Zhao Yi, Claudio Fleiner, Scott Shattuck (This file is based
@@ -92,7 +92,7 @@ syntax match   javaScriptFloat          /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%(
 syntax keyword javaScriptBrowserObjects           window navigator screen history location
 
 syntax keyword javaScriptDOMObjects               document event HTMLElement Anchor Area Base Body Button Form Frame Frameset Image Link Meta Option Select Style Table TableCell TableRow Textarea
-syntax keyword javaScriptDOMMethods               createTextNode createElement insertBefore replaceChild removeChild appendChild  hasChildNodes  cloneNode  normalize  isSupported  hasAttributes  getAttribute  setAttribute  removeAttribute  getAttributeNode  setAttributeNode  removeAttributeNode  getElementsByTagName  hasAttribute  querySelector querySelectorAll getElementById adoptNode close compareDocumentPosition createAttribute createCDATASection createComment createDocumentFragment createElementNS createEvent createExpression createNSResolver createProcessingInstruction createRange createTreeWalker elementFromPoint evaluate getBoxObjectFor getElementsByClassName getSelection getUserData hasFocus importNode addEventListener
+syntax keyword javaScriptDOMMethods               createTextNode createElement insertBefore replaceChild removeChild appendChild  hasChildNodes  cloneNode  normalize  isSupported  hasAttributes  getAttribute  setAttribute  removeAttribute  getAttributeNode  setAttributeNode  removeAttributeNode  getElementsByTagName  hasAttribute  querySelector querySelectorAll getElementById adoptNode close compareDocumentPosition createAttribute createCDATASection createComment createDocumentFragment createElementNS createEvent createExpression createNSResolver createProcessingInstruction createRange createTreeWalker elementFromPoint evaluate getBoxObjectFor getElementsByClassName getSelection getUserData hasFocus importNode
 syntax keyword javaScriptDOMProperties            nodeName  nodeValue  nodeType  parentNode  childNodes  firstChild  lastChild  previousSibling  nextSibling  attributes  ownerDocument  namespaceURI  prefix  localName  tagName
 
 syntax keyword javaScriptAjaxObjects              XMLHttpRequest
@@ -279,6 +279,7 @@ if version >= 508 || !exists("did_javascript_syn_inits")
 	HiLink javaScriptDOMObjects             Constant
 	HiLink javaScriptDOMMethods             Type
 	HiLink javaScriptDOMProperties          Label
+	HiLink javaScriptEventListenerMethods   Label
 
 	HiLink javaScriptAjaxObjects            Constant
 	HiLink javaScriptAjaxMethods            Type
