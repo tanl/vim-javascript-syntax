@@ -35,8 +35,8 @@ syntax match shebang "^#!.*"
 hi link shebang Comment
 
 " Statement Keywords {{{
-syntax keyword javaScriptSource         import export
-syntax keyword javaScriptIdentifier     arguments this let var void yield
+syntax keyword javaScriptSource         import export require
+syntax keyword javaScriptIdentifier     arguments this let var const void yield
 syntax keyword javaScriptOperator       delete new instanceof typeof
 syntax keyword javaScriptBoolean        true false
 syntax keyword javaScriptNull           null undefined
@@ -51,7 +51,7 @@ syntax keyword javaScriptPrototype      prototype
 syntax keyword javaScriptStatement      return with
 syntax keyword javaScriptGlobalObjects  Array Boolean Date Function Math Number Object RegExp String
 syntax keyword javaScriptExceptions     try catch throw finally Error EvalError RangeError ReferenceError SyntaxError TypeError URIError
-syntax keyword javaScriptReserved       abstract enum int short boolean export interface static byte extends long super char final native synchronized class float package throws const goto private transient debugger implements protected volatile double import public
+syntax keyword javaScriptReserved       abstract enum int short boolean export interface static byte extends long super char final native synchronized class float package throws goto private transient debugger implements protected volatile double import public
 "}}}
 " Comments {{{
 syntax keyword javaScriptCommentTodo      TODO FIXME XXX TBD contained
@@ -80,6 +80,9 @@ syntax match   javaScriptSpecial          "\\\d\d\d\|\\."
 syntax region  javaScriptString	          start=+"+  skip=+\\\\\|\\"+  end=+"\|$+	contains=javaScriptSpecial,@htmlPreproc
 syntax region  javaScriptString	          start=+'+  skip=+\\\\\|\\'+  end=+'\|$+	contains=javaScriptSpecial,@htmlPreproc
 
+syntax region  javascriptTemplate          start=/`/  skip=/\\\\\|\\`\|\n/  end=/`\|$/ contains=javascriptTemplateSubstitution nextgroup=@javascriptComments,@javascriptSymbols skipwhite skipempty
+syntax region  javascriptTemplateSubstitution matchgroup=javascriptTemplateSB contained start=/\${/ end=/}/ contains=@javascriptExpression
+
 syntax match   javaScriptSpecialCharacter "'\\.'"
 syntax match   javaScriptNumber           "-\=\<\d\+L\=\>\|0[xX][0-9a-fA-F]\+\>"
 syntax region  javaScriptRegexpString     start=+/[^/*]+me=e-1 skip=+\\\\\|\\/+ end=+/[gim]\{0,2\}\s*$+ end=+/[gim]\{0,2\}\s*[;.,)\]}]+me=e-1 contains=@htmlPreproc oneline
@@ -89,7 +92,7 @@ syntax match   javaScriptFloat          /\<-\=\%(\d\+\.\d\+\|\d\+\.\|\.\d\+\)\%(
 syntax keyword javaScriptBrowserObjects           window navigator screen history location
 
 syntax keyword javaScriptDOMObjects               document event HTMLElement Anchor Area Base Body Button Form Frame Frameset Image Link Meta Option Select Style Table TableCell TableRow Textarea
-syntax keyword javaScriptDOMMethods               createTextNode createElement insertBefore replaceChild removeChild appendChild  hasChildNodes  cloneNode  normalize  isSupported  hasAttributes  getAttribute  setAttribute  removeAttribute  getAttributeNode  setAttributeNode  removeAttributeNode  getElementsByTagName  hasAttribute  getElementById adoptNode close compareDocumentPosition createAttribute createCDATASection createComment createDocumentFragment createElementNS createEvent createExpression createNSResolver createProcessingInstruction createRange createTreeWalker elementFromPoint evaluate getBoxObjectFor getElementsByClassName getSelection getUserData hasFocus importNode
+syntax keyword javaScriptDOMMethods               createTextNode createElement insertBefore replaceChild removeChild appendChild  hasChildNodes  cloneNode  normalize  isSupported  hasAttributes  getAttribute  setAttribute  removeAttribute  getAttributeNode  setAttributeNode  removeAttributeNode  getElementsByTagName  hasAttribute  querySelector querySelectorAll getElementById adoptNode close compareDocumentPosition createAttribute createCDATASection createComment createDocumentFragment createElementNS createEvent createExpression createNSResolver createProcessingInstruction createRange createTreeWalker elementFromPoint evaluate getBoxObjectFor getElementsByClassName getSelection getUserData hasFocus importNode addEventListener
 syntax keyword javaScriptDOMProperties            nodeName  nodeValue  nodeType  parentNode  childNodes  firstChild  lastChild  previousSibling  nextSibling  attributes  ownerDocument  namespaceURI  prefix  localName  tagName
 
 syntax keyword javaScriptAjaxObjects              XMLHttpRequest
@@ -158,7 +161,7 @@ syntax keyword javaScriptEventListenerMethods     scrollIntoView  addEventListen
 	endif
 " end DOM/HTML/CSS specified things }}}
 " Code blocks"{{{
-syntax cluster javaScriptAll       contains=javaScriptComment,javaScriptLineComment,javaScriptDocComment,javaScriptString,javaScriptRegexpString,javaScriptNumber,javaScriptFloat,javaScriptLabel,javaScriptSource,javaScriptWebAPI,javaScriptOperator,javaScriptBoolean,javaScriptNull,javaScriptFuncKeyword,javaScriptConditional,javaScriptGlobal,javaScriptRepeat,javaScriptBranch,javaScriptStatement,javaScriptGlobalObjects,javaScriptMessage,javaScriptIdentifier,javaScriptExceptions,javaScriptReserved,javaScriptDeprecated,javaScriptDomErrNo,javaScriptDomNodeConsts,javaScriptHtmlEvents,javaScriptDotNotation,javaScriptBrowserObjects,javaScriptDOMObjects,javaScriptAjaxObjects,javaScriptPropietaryObjects,javaScriptDOMMethods,javaScriptHtmlElemProperties,javaScriptDOMProperties,javaScriptEventListenerKeywords,javaScriptEventListenerMethods,javaScriptAjaxProperties,javaScriptAjaxMethods,javaScriptFuncArg
+syntax cluster javaScriptAll       contains=javaScriptComment,javaScriptLineComment,javaScriptDocComment,javaScriptString,javaScriptRegexpString,javaScriptTemplate,javaScriptNumber,javaScriptFloat,javaScriptLabel,javaScriptSource,javaScriptWebAPI,javaScriptOperator,javaScriptBoolean,javaScriptNull,javaScriptFuncKeyword,javaScriptConditional,javaScriptGlobal,javaScriptRepeat,javaScriptBranch,javaScriptStatement,javaScriptGlobalObjects,javaScriptMessage,javaScriptIdentifier,javaScriptExceptions,javaScriptReserved,javaScriptDeprecated,javaScriptDomErrNo,javaScriptDomNodeConsts,javaScriptHtmlEvents,javaScriptDotNotation,javaScriptBrowserObjects,javaScriptDOMObjects,javaScriptAjaxObjects,javaScriptPropietaryObjects,javaScriptDOMMethods,javaScriptHtmlElemProperties,javaScriptDOMProperties,javaScriptEventListenerKeywords,javaScriptEventListenerMethods,javaScriptAjaxProperties,javaScriptAjaxMethods,javaScriptFuncArg
 
 if main_syntax == "javascript"
 	syntax sync clear
@@ -226,7 +229,9 @@ if version >= 508 || !exists("did_javascript_syn_inits")
 
 	HiLink javaScriptString                 String
 	HiLink javaScriptRegexpString           String
-	HiLink javaScriptTemplateString         String
+  HiLink javascriptTemplate               String
+  HiLink javascriptTemplateSubstitution   Label
+  HiLink javascriptTemplateSB             javascriptTemplateSubstitution
 
 	HiLink javaScriptNumber                 Number
 	HiLink javaScriptFloat                  Number
